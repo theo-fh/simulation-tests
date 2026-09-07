@@ -149,10 +149,8 @@ void getInitValues(char ask, float bearing_x, float bearing_y, float& mass_x, fl
     float angle_deg;
     float length;
     
-    if(ask == 'y'){
+    if(ask == 'y' | ask == 'j'){
         std::cout << "Auslenkung (Grad): ";
-        float angle_deg;
-        float length;
 
         // Fängt fehlerhafte Eingaben ab
         while (!(std::cin >> angle_deg)) {
