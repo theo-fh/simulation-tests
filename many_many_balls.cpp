@@ -214,7 +214,7 @@ int main(){
 
 
         //Position updaten
-        float min_velocity = 18.0f; //für freezeIfSlow
+        float min_velocity = 9.0f; //für freezeIfSlow
 
         for(int i=0; i<ballsAmount; i++){
             balls[i].freezeIfSlow(height, min_velocity, g);
