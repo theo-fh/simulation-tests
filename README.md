@@ -4,17 +4,17 @@ Eine Sammlung an drei kleinen Programmen, die ich geschrieben habe, um die Simul
 
 ## Pendel
 
-<video src="videos/pendel-demo.mp4" controls width="100%"></video>
+https://github.com/user-attachments/assets/ebbabfe0-afbf-4a56-84f3-4b5b96211e7c
 
 Code: `pendulum.cpp`
 
 ## Kugeln im Raum
 
-<video src="videos/baelle-20-demo.mp4" controls width="100%"></video>
+https://github.com/user-attachments/assets/4a2bbb91-7d7f-4a91-bc39-ca05440ddda4
 
 20 vollelastische Kugeln mit zufälliger Position, Geschwindigkeit, Masse und Farbe werden in einen Raum "geworfen". Reibungsverluste zwischen den Kugeln untereinander und an der Wand werden vereinfacht berücksichtigt. Außerdem gilt die Annahme, dass die Kugeln nicht rotieren.
 
-<video src="videos/baelle-100-demo.mp4" controls width="100%"></video>
+https://github.com/user-attachments/assets/84f08bec-f6a7-4b5b-b65c-9fc22f01117d
 
 Bei 100 Kugeln kommt das Programm nicht mehr mit - die Kugeln zittern umher und schieben sich mit der Zeit ineinander. Dies liegt daran, dass die Teilfunktion des Programms, die den Abstand zwischen den Bällen direkt nach einer Kollision regelt, einfach zu simpel geschrieben ist.
 
@@ -22,7 +22,7 @@ Code: `many_many_balls.cpp`
 
 ## Einfacher Wurf
 
-<video src="videos/wurf-verlauf.mp4" controls width="100%"></video>
+https://github.com/user-attachments/assets/c8faa81a-ac4a-4d98-bda5-3724e8da444b
 
 Diese simple Simulation einer im Raum geworfenen Kugel berücksichtigt die Schwerkraft und - in stark vereinfachter Form (es wird z. B. ein konstanter cw-Wert angenommen) - den Luftwiderstand. Ein tieferer Rotton in der Farbe der Kugel bedeutet eine höhere Widerstandskraft. Hier wird ebenso die Rotation der Kugel ausgeschlossen.
 
