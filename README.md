@@ -2,9 +2,13 @@
 
 Eine Sammlung an drei kleinen Programmen, die ich geschrieben habe, um die Simulation von Mehrkörperdynamik kennenzulernen. Es folgen einige Demo-Videos. Falls Sie das Programm selber ausführen wollen, benötigen Sie die Raylib-Bibliothek als Abhängigkeit.
 
-## Pendel
+## Doppelpendel
 
-https://github.com/user-attachments/assets/ebbabfe0-afbf-4a56-84f3-4b5b96211e7c
+https://github.com/user-attachments/assets/094a404c-bbf0-4152-a249-40b4d44851ad
+
+Zwei Punktmassen sind miteinander verbunden, eine fest gelagert. Das System wird ausgelenkt und losgelassen.
+Die Simulation ist auf Kraft basiert, nachträglich wird die Geometrie korrigiert, um die Zwangsbedingung der Stäbe durchzusetzen. Gelöst wird mit einem expliziten Euler-Integrationsverfahren. Ein Problem mit dieser Methode ist, dass sie ohne weitere Behandlung viel Energie in das System einführt und bei höheren Auslenkungswinkeln dazu führt, dass das System immer schneller, bis ins undendliche schwingt, aber auch bei kleineren Auslenkungen zu unrealistischen Schwingungsvorgängen führt.
+Dieser Effekt kann mit einer iterativen Anwendung der zwei Zwangsbedingungen und einer sehr hohen Zahl an Substeps (Simulationsschritten, die zwischen zwei Frames geschehen), stark vermindert werden. Jedoch führt das zu einer relativ hohen CPU-Auslastung für so eine einfache Simulation. Die Anwendung ist also stark begrenzt.
 
 Code: `pendulum.cpp`
 
