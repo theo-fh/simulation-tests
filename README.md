@@ -6,8 +6,10 @@ Eine Sammlung an drei kleinen Programmen, die ich geschrieben habe, um die Simul
 
 https://github.com/user-attachments/assets/094a404c-bbf0-4152-a249-40b4d44851ad
 
-Zwei Punktmassen sind miteinander verbunden, eine fest gelagert. Das System wird ausgelenkt und losgelassen.
+Zwei Punktmassen sind miteinander verbunden, eine fest gelagert. Das System wird ausgelenkt und losgelassen. Der durchaus schöne Verlauf der unteren Masse wird mit einer dünnen grünen Linie nachgezogen.
+
 Die Simulation ist auf Kraft basiert, nachträglich wird die Geometrie korrigiert, um die Zwangsbedingung der Stäbe durchzusetzen. Gelöst wird mit einem expliziten Euler-Integrationsverfahren. Ein Problem mit dieser Methode ist, dass sie ohne weitere Behandlung viel Energie in das System einführt und bei höheren Auslenkungswinkeln dazu führt, dass das System immer schneller, bis ins undendliche schwingt, aber auch bei kleineren Auslenkungen zu unrealistischen Schwingungsvorgängen führt.
+
 Dieser Effekt kann mit einer iterativen Anwendung der zwei Zwangsbedingungen und einer sehr hohen Zahl an Substeps (Simulationsschritten, die zwischen zwei Frames geschehen), stark vermindert werden. Jedoch führt das zu einer relativ hohen CPU-Auslastung für so eine einfache Simulation. Die Anwendung ist also stark begrenzt.
 
 Code: `pendulum.cpp`
