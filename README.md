@@ -4,6 +4,8 @@ Eine Sammlung an drei kleinen Programmen, die ich geschrieben habe, um die Simul
 
 ## Doppelpendel
 
+Die Programme können sie unter ![Releases](https://github.com/theo-fh/simulation-tests/releases) herunterladen.
+
 https://github.com/user-attachments/assets/094a404c-bbf0-4152-a249-40b4d44851ad
 
 Zwei Punktmassen sind miteinander verbunden, eine fest gelagert. Das System wird ausgelenkt und losgelassen. Der durchaus schöne Verlauf der unteren Masse wird mit einer dünnen grünen Linie nachgezogen.
