@@ -307,29 +307,34 @@ class Motor{
     float reference_pos_x;
     float pos_y; 
     float vel_x = 0.0f;
-    float max_vel = 50.0f;
+    float max_vel;
+    float max_acc;
     
-    Motor(const float pos_x_given, const float pos_y_given, const float max_vel_given){
+    Motor(const float pos_x_given, const float pos_y_given, const float max_vel_given, const float max_acc_given){
         pos_x = pos_x_given;
         reference_pos_x = pos_x_given;
         pos_y = pos_y_given;
         max_vel = max_vel_given;
+        max_acc = max_acc_given;
     }
 
     void updatePos(const float dt){
         pos_x += vel_x * dt;
     }
 
-    void controlSpeed(const float controlFactor){
-        //simples P-Glied
+    void controlSpeedP(const float controlFactor, float dt){
+        //ideales PD-Glied?
         const float pos_control_diff = reference_pos_x - pos_x;
+        const float last_vel_x = vel_x;
         vel_x = pos_control_diff * controlFactor;
 
         //maximale Geschwindigkeit berücksichtigen
         if(vel_x > 0.0f && vel_x > max_vel) vel_x = max_vel;
         else if (vel_x < 0.0f && vel_x < -max_vel) vel_x = -max_vel;
 
-        //TODO: der motor kann sehr schnell beschleunigen, sieht unrealistisch aus also beschleunigung begrenzen
+        const float curr_acc = (vel_x - last_vel_x) / dt;
+        if(curr_acc > 0 && curr_acc > max_acc) vel_x = last_vel_x + max_acc * dt;
+        else if(curr_acc < 0 && curr_acc < -max_acc) vel_x = last_vel_x - max_acc * dt;
     }
 
     void backAndForth(const int window_width, const int pixels_from_border){
@@ -353,13 +358,9 @@ class Motor{
     
     bool suppress(PointMass* connected_mass, bool activated_recently, float position_factor, float velocity_factor){
         //Ändert die Stellgröße der x-Position so, dass die Masse höher schwingt. Return sagt, ob Ruhelage erreicht wurde.
-        
-        //Motor folgt dem Pendel nach
-        reference_pos_x += (connected_mass->pos_x - pos_x) * position_factor;
-        //Motor geht dem Pendel noch ein Stück voraus, um vel_x = 0 zu erzielen
-        //FIXME: diese Zeile funktioniert einfach nicht
-        reference_pos_x += connected_mass->vel_x * velocity_factor;
 
+        //nur, wenn sich die masse nicht im gleichgewicht befindet:
+        reference_pos_x = connected_mass->pos_x * (1 + position_factor) - pos_x * position_factor;
         if((std::abs(pos_x - connected_mass->pos_x) < 1.0f)) return true;
         return false;
     }

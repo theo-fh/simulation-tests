@@ -16,13 +16,13 @@ int main(){
     //Lager bestimmen
     constexpr int win_dimensions[] = {600, 400};
     constexpr float motor_init_x = (float) win_dimensions[0]/2.0f;
-    constexpr float motor_init_y = 60.0f;
+    constexpr float motor_init_y = (float) win_dimensions[1]/2.0f;
 
     //erste Punktmasse initiieren
     constexpr float acceleration_g = 150.0f;
 
     //Masse nach Länge und Auslenkung einführen
-    constexpr float length_init = 200.0f;
+    constexpr float length_init = 150.0f;
     constexpr float angle_init = 0.0f * PI / 180.0f;
     const float mass1_init_x = motor_init_x + sinf(angle_init) * length_init;
     const float mass1_init_y = motor_init_y + cosf(angle_init) * length_init;
@@ -31,12 +31,11 @@ int main(){
     //um den Nutzer nicht nach Werten zu fragenm sondern Standardwerte einzusetzen
     //getInitValues(false, bearing_x, bearing_y, mass1_init_x, mass1_init_y, motor_init_x, motor_init_y);
 
-
-    
     //Masse und Motor erstellen
-    PointMass mass1("m1", 2.5f, mass1_init_x, mass1_init_y, acceleration_g);
-    constexpr float max_speed_motor = 100.0f;
-    Motor motor1(motor_init_x, motor_init_y, max_speed_motor);
+    PointMass mass1(":)", 2.5f, mass1_init_x, mass1_init_y, acceleration_g);
+    constexpr float max_speed_motor = 200.0f;
+    constexpr float max_acc_motor = 400.0f;
+    Motor motor1(motor_init_x, motor_init_y, max_speed_motor, max_acc_motor);
 
     //Lager und Massen miteinander verbinden
     RodLink rod1(&mass1, &motor1);
@@ -72,6 +71,8 @@ int main(){
 
         //Koordinaten in Substeps erneuern
         for(int step = 0; step < sub_steps; step++){
+
+            rod1.update();
             
             if(mass1.pos_y < motor1.pos_y && equilibrium_detected) curr_operation = Suppress;
             else if (curr_operation == Suppress && mass1.pos_y > motor1.pos_y) curr_operation = Stop;
@@ -81,14 +82,14 @@ int main(){
                 equilibrium_detected = motor1.excite(&mass1, equilibrium_detected, position_change_from_excite); //Motor soll Pendel aufschwingen
             }
             else if(curr_operation == Suppress){
-                constexpr float position_change_factor = 3.0f; //gibt an, wie stark der motor dem pendel nachfolgt (stabilisiert Pendel)
-                constexpr float speed_change_factor = 0.5f; //gibt an, wie viel der motor der masse voraus fährt (hält Motor an einem Ort)
+                constexpr float position_change_factor = 6.0f; //gibt an, wie stark der motor dem pendel nachfolgt (stabilisiert Pendel)
+                constexpr float speed_change_factor = 2.0f; //gibt an, wie viel der motor der masse voraus fährt (hält Motor an einem Ort)
                 equilibrium_detected = motor1.suppress(&mass1, equilibrium_detected, position_change_factor, speed_change_factor);
             }
             else if(curr_operation == Stop) motor1.reference_pos_x = win_dimensions[0]/2.0f;
 
             constexpr float speed_control_factor = 2.0f;
-            motor1.controlSpeed(speed_control_factor); //Motor zur Führungsgröße hinbewegen
+            motor1.controlSpeedP(speed_control_factor, dt); //Motor zur Führungsgröße hinbewegen
 
             mass1.updateAcc();
 
@@ -99,7 +100,7 @@ int main(){
             motor1.updatePos(dt);
             motor1.backAndForth(win_dimensions[0], 100);
             
-            //Zwangsbedingung der zwei Stäbe iterativ durchsetzen, vermindert Überschwingen
+            //Zwangsbedingung korrigieren
             rod1.correctPosition();
             rod1.correctVelocity();
 
