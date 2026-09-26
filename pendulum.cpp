@@ -99,5 +99,8 @@ int main(){
         EndDrawing();
     }
 
+    UnloadTexture(bearingImg);
+    UnloadFont(notoserif);
+
     return 0;
 }

@@ -4,6 +4,7 @@
 #include <string.h>
 #include <cmath>
 #include <vector>
+#include <iostream>
 
 class PointMass{
     //Punktmasse, kann beliebig viele angreifende Kräfte besitzen
@@ -295,6 +296,166 @@ class RodConnect{
 
         connected_mass_2->vel_x -= inverse_mass_2 * impulse * nx;
         connected_mass_2->vel_y -= inverse_mass_2 * impulse * ny;
+    }
+
+};
+
+class Motor{
+    //linearmotor
+    public:
+    float pos_x;
+    float reference_pos_x;
+    float pos_y; 
+    float vel_x = 0.0f;
+    float max_vel = 50.0f;
+    
+    Motor(const float pos_x_given, const float pos_y_given, const float max_vel_given){
+        pos_x = pos_x_given;
+        reference_pos_x = pos_x_given;
+        pos_y = pos_y_given;
+        max_vel = max_vel_given;
+    }
+
+    void updatePos(const float dt){
+        pos_x += vel_x * dt;
+    }
+
+    void controlSpeed(const float controlFactor){
+        //simples P-Glied
+        const float pos_control_diff = reference_pos_x - pos_x;
+        vel_x = pos_control_diff * controlFactor;
+
+        //maximale Geschwindigkeit berücksichtigen
+        if(vel_x > 0.0f && vel_x > max_vel) vel_x = max_vel;
+        else if (vel_x < 0.0f && vel_x < -max_vel) vel_x = -max_vel;
+
+        //TODO: der motor kann sehr schnell beschleunigen, sieht unrealistisch aus also beschleunigung begrenzen
+    }
+
+    void backAndForth(const int window_width, const int pixels_from_border){
+        if(pos_x < pixels_from_border || pos_x > window_width - pixels_from_border) vel_x *= -1.0f;
+    }
+
+    bool excite(PointMass* connected_mass, bool activated_recently, float reference_change){
+        //Ändert die Stellgröße der x-Position so, dass die Masse höher schwingt. Return sagt, ob Ruhelage erreicht wurde.
+        if((std::abs(pos_x - connected_mass->pos_x) < 1.0f)){
+            if(!activated_recently){
+                //std::cout << "Ruhelage!\n";
+                if(connected_mass->vel_x > 0.0f) reference_pos_x -= reference_change;
+                else reference_pos_x += reference_change;
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    
+    bool suppress(PointMass* connected_mass, bool activated_recently, float position_factor, float velocity_factor){
+        //Ändert die Stellgröße der x-Position so, dass die Masse höher schwingt. Return sagt, ob Ruhelage erreicht wurde.
+        
+        //Motor folgt dem Pendel nach
+        reference_pos_x += (connected_mass->pos_x - pos_x) * position_factor;
+        //Motor geht dem Pendel noch ein Stück voraus, um vel_x = 0 zu erzielen
+        //FIXME: diese Zeile funktioniert einfach nicht
+        reference_pos_x += connected_mass->vel_x * velocity_factor;
+
+        if((std::abs(pos_x - connected_mass->pos_x) < 1.0f)) return true;
+        return false;
+    }
+
+    void draw(){
+        DrawRectangle((int) pos_x, (int) pos_y, 30, 30, GRAY);
+    }
+
+};
+
+class RodLink{
+    //masseloser Stab, der Masse und Motor verbindet
+    public:
+    float length;
+    float force;
+    PointMass* connected_mass;
+    int fx_index_mass;
+    int fy_index_mass;
+    Motor* connected_motor;
+
+    RodLink(PointMass* mass_given, Motor* motor_given){
+        connected_mass = mass_given;
+        connected_motor = motor_given;
+        length = sqrtf(pow(mass_given->pos_x - motor_given->pos_x, 2) + pow(mass_given->pos_y - motor_given->pos_y, 2));
+        
+        fx_index_mass = connected_mass->forces_x.size();
+        fy_index_mass = connected_mass->forces_y.size();
+        connected_mass->forces_x.push_back(0.0f);
+        connected_mass->forces_y.push_back(0.0f);
+    }
+
+    float update(){
+        //berechnet Stabkraft im neuen Frame und wendet sie auf die Masse an
+        float other_forces_x = 0.0f; //Auf Masse 1 bezogen
+        float other_forces_y = 0.0f;
+
+        float nx = (connected_mass->pos_x - connected_motor->pos_x) / length;
+        float ny = (connected_mass->pos_y - connected_motor->pos_y) / length;
+
+        //andere Kräfte aufaddieren
+        for(int i = 0; i < connected_mass->forces_x.size(); i++) if(i!=fx_index_mass) other_forces_x += connected_mass->forces_x[i];
+        for(int i = 0; i < connected_mass->forces_y.size(); i++) if(i!=fy_index_mass) other_forces_y += connected_mass->forces_y[i];
+
+        float v_radial_rel = (connected_mass->vel_x - connected_motor->vel_x) * nx + (connected_mass->vel_y) * ny; //soll 0 sein
+        float v_tang_rel = (connected_mass->vel_x - connected_motor->vel_x) * ny - (connected_mass->vel_y) * nx;
+
+        float force_centripetal = connected_mass->mass * (v_radial_rel*v_radial_rel)/length;
+        float force = force_centripetal + other_forces_x * nx + other_forces_y * ny;
+
+        connected_mass->forces_x[fx_index_mass] = -force * nx;
+        connected_mass->forces_y[fy_index_mass] = -force * ny;
+
+        //std::cout << v_tang_rel << "\n";
+        return v_tang_rel;
+
+    }
+
+    void correctPosition(){
+        float dx = connected_mass->pos_x - connected_motor->pos_x;
+        float dy = connected_mass->pos_y - connected_motor->pos_y;
+        float current_length = sqrtf(dx * dx + dy * dy);
+
+        if (current_length < 1e-6f) return;
+
+        float nx = dx / current_length;
+        float ny = dy / current_length;
+        
+        float error = current_length - length;
+
+        //std::cout << current_length << "\n";
+
+        connected_mass->pos_x -= error * nx;
+        connected_mass->pos_y -= error * ny;
+    }
+
+    void correctVelocity(){
+        float dx = connected_mass->pos_x - connected_motor->pos_x;
+        float dy = connected_mass->pos_y - connected_motor->pos_y;
+        float current_length = sqrtf(dx * dx + dy * dy);
+
+        if (current_length < 1e-6f) return;
+
+        float nx = dx / current_length;
+        float ny = dy / current_length;
+
+        float relative_vx = connected_mass->vel_x - connected_motor->vel_x;
+        float relative_vy = connected_mass->vel_y;
+        float radial_velocity = relative_vx * nx + relative_vy * ny;
+
+        connected_mass->vel_x -= radial_velocity * nx;
+        connected_mass->vel_y -= radial_velocity * ny;
+    }
+
+    void draw(){
+        float line_thickness = 5.0f;
+        DrawLineEx({connected_mass->pos_x, connected_mass->pos_y}, {connected_motor->pos_x, connected_motor->pos_y}, line_thickness, BLACK);
     }
 
 };
