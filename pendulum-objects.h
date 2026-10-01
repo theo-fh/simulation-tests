@@ -341,7 +341,7 @@ class Motor{
         if(pos_x < pixels_from_border || pos_x > window_width - pixels_from_border) vel_x *= -1.0f;
     }
 
-    bool excite(PointMass* connected_mass, bool activated_recently, float reference_change){
+    void excite(PointMass* connected_mass, const bool activated_recently, const float reference_change){
         //Ändert die Stellgröße der x-Position so, dass die Masse höher schwingt. Return sagt, ob Ruhelage erreicht wurde.
         if((std::abs(pos_x - connected_mass->pos_x) < 1.0f)){
             if(!activated_recently){
@@ -349,14 +349,11 @@ class Motor{
                 if(connected_mass->vel_x > 0.0f) reference_pos_x -= reference_change;
                 else reference_pos_x += reference_change;
             }
-            return true;
         }
-
-        return false;
     }
 
     
-    bool suppress(PointMass* connected_mass, bool activated_recently, float velocity_factor){
+    void stabilize(PointMass* connected_mass, const float velocity_factor){
         //Ändert die Stellgröße der x-Position so, dass die Masse höher schwingt. Return sagt, ob Ruhelage erreicht wurde.
 
         //nur, wenn sich die masse nicht im gleichgewicht befindet:
@@ -364,12 +361,45 @@ class Motor{
         //float sign_vel = 1.0f;
         //if(mass_vel < 0.0f) sign_vel = -1.0f;
         reference_pos_x = connected_mass->pos_x + mass_vel * velocity_factor;
-        if((std::abs(pos_x - connected_mass->pos_x) < 1.0f)) return true;
-        return false;
+
+    }
+
+    void suppress(PointMass* connected_mass, const float wiggleroom, const float velocity_factor, const float win_width){
+        //wiggleroom: bereich in dem die masse entschleunigt wird
+
+        //Problem: folgt der Masse bis aus dem Bild hinterher
+        float rel_pos = connected_mass->pos_x - pos_x;
+
+        if (rel_pos < 0) rel_pos *= -1.0f;
+
+        if(rel_pos < wiggleroom) reference_pos_x = connected_mass->pos_x + connected_mass->vel_x * velocity_factor;
+
+        else {
+            float posY_rel = connected_mass->pos_y - pos_y;
+            if (posY_rel < 0.0f) posY_rel *= -1.0f;
+            constexpr float position_factor = 1.0f;
+            if(posY_rel < wiggleroom) reference_pos_x = win_width / 2;
+        }
+
+    }
+
+    void center(PointMass* connected_mass, const float wiggleroom, const float win_width){
+        
+        float posY_rel = connected_mass->pos_y - pos_y;
+        if (posY_rel < 0.0f) posY_rel *= -1.0f;
+        constexpr float position_factor = 1.0f;
+        if(posY_rel < wiggleroom) reference_pos_x = win_width / 2;
+        else reference_pos_x = pos_x;
+
     }
 
     void draw(){
         DrawRectangle((int) pos_x, (int) pos_y, 30, 30, GRAY);
+    }
+
+    void drawReference(){
+        constexpr float radius = 5.0f;
+        DrawCircle(reference_pos_x, pos_y, radius, RED);
     }
 
 };

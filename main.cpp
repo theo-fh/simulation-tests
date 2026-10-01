@@ -5,13 +5,6 @@
 #include "pendulum-functions.h"
 #include <iostream>
 
-enum operation{
-    Excite,
-    Suppress,
-    Stop,
-    Reset
-};
-
 int main(){
 
     //Lager bestimmen
@@ -33,7 +26,8 @@ int main(){
     //getInitValues(false, bearing_x, bearing_y, mass1_init_x, mass1_init_y, motor_init_x, motor_init_y);
 
     //Masse und Motor erstellen
-    PointMass mass1(":)", 2.5f, mass1_init_x, mass1_init_y, acceleration_g);
+    constexpr float mass_given = 2.5f;
+    PointMass mass1(":)", mass_given, mass1_init_x, mass1_init_y, acceleration_g);
     constexpr float max_speed_motor = 200.0f;
     constexpr float max_acc_motor = 400.0f;
     Motor motor1(motor_init_x, motor_init_y, max_speed_motor, max_acc_motor);
@@ -49,7 +43,8 @@ int main(){
     constexpr float frame_dt = 1.0f/targetFPS;
 
     //Schriftart und Bild des Festlagers Laden
-    Font notoserif = LoadFontEx("fonts/NotoSerif-VariableFont_wdth,wght.ttf", 20, NULL, 0);
+    constexpr int loaded_fontsize = 20;
+    Font notoserif = LoadFontEx("fonts/NotoSerif-VariableFont_wdth,wght.ttf", loaded_fontsize, NULL, 0);
     Texture2D bearingImg = LoadTexture("images/bearing.png");
     constexpr  int bearingImgWidth = 48;
     constexpr  int bearingImgCircleHeight = 41;
@@ -75,22 +70,55 @@ int main(){
 
             rod1.update();
             
-            if(mass1.pos_y < motor1.pos_y && equilibrium_detected) curr_operation = Suppress;
-            else if (mass1.pos_y > motor1.pos_y) curr_operation = Excite;
-            if(IsKeyDown(KEY_SPACE)) curr_operation = Stop;
-            //if(mass1.pos_x < 30.0f | mass1.pos_x > win_dimensions[1] - 30.0f) curr_operation = Reset;
-            //TODO: Reset einbauen und allg. fixen, dass der Motor das Pendel oft einfach nicht stabilisieren kann...
+            
 
+            float velSq = mass1.vel_x * mass1.vel_x + mass1.vel_y * mass1.vel_y;
+            constexpr float surplus_speed_for_suppress = 50000.0f;
+            float velSq_needed_for_flip = 4.0f * (length_init + mass1.pos_y - motor1.pos_y) * acceleration_g;
+            //std::cout << velSq << "     " << velSq_needed_for_flip << "\n";
+
+
+            constexpr float max_border_dist = 30.0f;
+            if(motor1.pos_x < max_border_dist | motor1.pos_x > win_dimensions[0] - max_border_dist) curr_operation = Center;
+
+            constexpr float center_tolerance = 50.0f;
+
+            if(curr_operation == Center && abs(motor1.pos_x - win_dimensions[0] / 2) > center_tolerance) {}
+
+            
+
+            else if(velSq > velSq_needed_for_flip + surplus_speed_for_suppress) curr_operation = Suppress; 
+
+            else if(mass1.pos_y < motor1.pos_y && equilibrium_detected) curr_operation = Stabilize;
+
+            else if (mass1.pos_y > motor1.pos_y ) curr_operation = Excite;
+
+
+            if(IsKeyDown(KEY_SPACE)) curr_operation = Stop;
+
+            //TODO: Roboter geht sehr schnell an die Ränder, vor allem bei Excite
             if(curr_operation == Excite){
                 constexpr float position_change_from_excite = 50.0f; //wirklich keine Ahnung wie ich das nennen soll
-                equilibrium_detected = motor1.excite(&mass1, equilibrium_detected, position_change_from_excite); //Motor soll Pendel aufschwingen
+                motor1.excite(&mass1, equilibrium_detected, position_change_from_excite); //Motor soll Pendel aufschwingen
             }
-            else if(curr_operation == Suppress){
+            else if(curr_operation == Stabilize){
                  //gibt an, wie stark der motor dem pendel nachfolgt (stabilisiert Pendel)
-                constexpr float speed_change_factor = 1.5f; //gibt an, wie viel der motor der masse voraus fährt (hält Motor an einem Ort)
-                equilibrium_detected = motor1.suppress(&mass1, equilibrium_detected, speed_change_factor);
+                constexpr float speed_change_factor = 1.9f; //gibt an, wie viel der motor der masse voraus fährt (hält Motor an einem Ort)
+                motor1.stabilize(&mass1, speed_change_factor);
+            }
+            else if (curr_operation == Suppress){
+                constexpr float speed_change_factor = 1.5f;
+                constexpr float suppress_interval = 20.0f;
+                motor1.suppress(&mass1, suppress_interval, speed_change_factor, win_dimensions[0]);
             }
             else if(curr_operation == Stop) motor1.reference_pos_x = win_dimensions[0]/2.0f;
+
+            else if(curr_operation == Center){
+                constexpr float wiggleroom = 40.0f;
+                motor1.center(&mass1, wiggleroom, win_dimensions[0]);
+            };
+
+            equilibrium_detected = detectEquilibrium(&mass1, &motor1);
 
             constexpr float speed_control_factor = 2.0f;
             motor1.controlSpeedP(speed_control_factor, dt); //Motor zur Führungsgröße hinbewegen
@@ -115,8 +143,10 @@ int main(){
         BeginDrawing();
         ClearBackground(WHITE);
 
-        //Verlauf der unteren Masse
+        //Verlauf der Masse und Stellwert der Motor-Position
         traceMass(&mass1, trajectory);
+        motor1.drawReference();
+        printOperation(curr_operation, notoserif, loaded_fontsize);
 
         //Stäbe und Massen
         rod1.draw();

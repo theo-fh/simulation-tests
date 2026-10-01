@@ -6,6 +6,35 @@
 #include <vector>
 #include "pendulum-objects.h"
 
+enum operation{
+    Excite,
+    Suppress,
+    Stabilize,
+    Stop,
+    Center
+};
+
+void printOperation(operation currOp, const Font font, const int fontsize){
+    constexpr int posX = 30;
+    constexpr int posY = 30;
+    std::string opText;
+    switch (currOp){
+        case Excite: opText = "Excite"; break;
+        case Suppress: opText = "Suppress"; break;
+        case Stabilize: opText = "Stabilize"; break;
+        case Stop: opText = "Stop"; break;
+        case Center: opText = "Center"; break;
+        default: opText = "none";
+    }
+    std::string output = "Curr. Operation: " + opText;
+    DrawTextEx(font, output.c_str(), {posX, posY}, fontsize, 0.0f, BLACK);
+}
+
+bool detectEquilibrium(PointMass* mass, Motor* motor){
+    if(std::abs(motor->pos_x - mass->pos_x) < 1.0f) return true;
+    return false;
+}
+
 void getInitValues(bool ask, float bearing_x, float bearing_y, float& mass1_pos_x, float& mass1_pos_y, float& mass2_pos_x, float& mass2_pos_y) {
     //fragt Nutzer Länge der einzelnen Pendel und Ausschlag (gleicher Winkel für beide Gelenke), rechnet diese in kartesische Koordinaten für
     //die Ausgangsposition der Massen um
@@ -70,3 +99,4 @@ void traceMass(PointMass* mass, std::vector<Vector2> &trajectory){
 
     DrawLineStrip(trajectory.data(), static_cast<int>(trajectory.size()), GREEN);
 }
+
