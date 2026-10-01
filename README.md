@@ -1,7 +1,3 @@
-
-
-https://github.com/user-attachments/assets/18b4ffd8-5492-4535-8e5f-e3de1863b313
-
 # Simulation-Tests
 
 Eine Sammlung an drei kleinen Programmen, die ich geschrieben habe, um die Simulation von Mehrkörperdynamik kennenzulernen. Es folgen einige Demo-Videos. Falls Sie das Programm selber ausführen wollen, benötigen Sie die Raylib-Bibliothek als Abhängigkeit.
