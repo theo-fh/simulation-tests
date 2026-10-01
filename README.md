@@ -16,6 +16,18 @@ Dieser Effekt kann mit einer iterativen Anwendung der zwei Zwangsbedingungen und
 
 Code: `pendulum.cpp`
 
+## Pendel-Roboter
+
+Ein Motor, der ein Pendel aufschwingt und dann oben in der Luft behält.
+Um die Simulation möglichst realistisch zu halten,
+wird Geschwindigkeit und Beschleunigung des Motors jeweils begrenzt
+und seine Position mit einem P-Glied geregelt.
+Es wird angenommen, dass die Trägheit der Punktmasse die Arbeit des Motors nicht beeinträchtigt
+und dass die Regelung ohne Verzögerung über Position und Geschwindigkeit der Masse in kartesischen Koordinaten verfügt.
+Basiert auf der Physik-Engine vom Doppelpendel.
+
+Code: `main.cpp`
+
 ## Kugeln im Raum
 
 https://github.com/user-attachments/assets/4a2bbb91-7d7f-4a91-bc39-ca05440ddda4
