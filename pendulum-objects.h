@@ -356,11 +356,14 @@ class Motor{
     }
 
     
-    bool suppress(PointMass* connected_mass, bool activated_recently, float position_factor, float velocity_factor){
+    bool suppress(PointMass* connected_mass, bool activated_recently, float velocity_factor){
         //Ändert die Stellgröße der x-Position so, dass die Masse höher schwingt. Return sagt, ob Ruhelage erreicht wurde.
 
         //nur, wenn sich die masse nicht im gleichgewicht befindet:
-        reference_pos_x = connected_mass->pos_x * (1 + position_factor) - pos_x * position_factor;
+        float mass_vel = connected_mass->vel_x;
+        //float sign_vel = 1.0f;
+        //if(mass_vel < 0.0f) sign_vel = -1.0f;
+        reference_pos_x = connected_mass->pos_x + mass_vel * velocity_factor;
         if((std::abs(pos_x - connected_mass->pos_x) < 1.0f)) return true;
         return false;
     }

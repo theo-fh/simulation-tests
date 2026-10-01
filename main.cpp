@@ -8,7 +8,8 @@
 enum operation{
     Excite,
     Suppress,
-    Stop
+    Stop,
+    Reset
 };
 
 int main(){
@@ -75,16 +76,19 @@ int main(){
             rod1.update();
             
             if(mass1.pos_y < motor1.pos_y && equilibrium_detected) curr_operation = Suppress;
-            else if (curr_operation == Suppress && mass1.pos_y > motor1.pos_y) curr_operation = Stop;
+            else if (mass1.pos_y > motor1.pos_y) curr_operation = Excite;
+            if(IsKeyDown(KEY_SPACE)) curr_operation = Stop;
+            //if(mass1.pos_x < 30.0f | mass1.pos_x > win_dimensions[1] - 30.0f) curr_operation = Reset;
+            //TODO: Reset einbauen und allg. fixen, dass der Motor das Pendel oft einfach nicht stabilisieren kann...
 
             if(curr_operation == Excite){
                 constexpr float position_change_from_excite = 50.0f; //wirklich keine Ahnung wie ich das nennen soll
                 equilibrium_detected = motor1.excite(&mass1, equilibrium_detected, position_change_from_excite); //Motor soll Pendel aufschwingen
             }
             else if(curr_operation == Suppress){
-                constexpr float position_change_factor = 6.0f; //gibt an, wie stark der motor dem pendel nachfolgt (stabilisiert Pendel)
-                constexpr float speed_change_factor = 2.0f; //gibt an, wie viel der motor der masse voraus fährt (hält Motor an einem Ort)
-                equilibrium_detected = motor1.suppress(&mass1, equilibrium_detected, position_change_factor, speed_change_factor);
+                 //gibt an, wie stark der motor dem pendel nachfolgt (stabilisiert Pendel)
+                constexpr float speed_change_factor = 1.5f; //gibt an, wie viel der motor der masse voraus fährt (hält Motor an einem Ort)
+                equilibrium_detected = motor1.suppress(&mass1, equilibrium_detected, speed_change_factor);
             }
             else if(curr_operation == Stop) motor1.reference_pos_x = win_dimensions[0]/2.0f;
 
@@ -98,7 +102,7 @@ int main(){
             mass1.updatePos(dt);
 
             motor1.updatePos(dt);
-            motor1.backAndForth(win_dimensions[0], 100);
+            //motor1.backAndForth(win_dimensions[0], 100);
             
             //Zwangsbedingung korrigieren
             rod1.correctPosition();

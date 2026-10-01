@@ -9,3 +9,7 @@ feder-daempfer
 images/Rastergrafik.png
 pendulum
 videos/*
+obj/*
+bin/*
+build/*
+include/*

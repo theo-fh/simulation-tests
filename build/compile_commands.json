@@ -17,12 +17,12 @@
       "-std=c++20",
       "-c",
       "-o",
-      "obj/x64/Debug/simulation/resource_dir.o",
+      "obj/x64/Debug/simulation-tests/resource_dir.o",
       "src/resource_dir.h"
     ],
-    "directory": "/home/theo/Dokumente/VSCode/simulation/",
-    "file": "/home/theo/Dokumente/VSCode/simulation/src/resource_dir.h",
-    "output": "/home/theo/Dokumente/VSCode/simulation/obj/x64/Debug/simulation/resource_dir.o"
+    "directory": "/home/theo/Dokumente/VSCode/simulation-tests/",
+    "file": "/home/theo/Dokumente/VSCode/simulation-tests/src/resource_dir.h",
+    "output": "/home/theo/Dokumente/VSCode/simulation-tests/obj/x64/Debug/simulation-tests/resource_dir.o"
   },
   {
     "arguments": [
@@ -42,12 +42,12 @@
       "-std=c++20",
       "-c",
       "-o",
-      "obj/x64/Debug/simulation/main.o",
+      "obj/x64/Debug/simulation-tests/main.o",
       "src/main.c"
     ],
-    "directory": "/home/theo/Dokumente/VSCode/simulation/",
-    "file": "/home/theo/Dokumente/VSCode/simulation/src/main.c",
-    "output": "/home/theo/Dokumente/VSCode/simulation/obj/x64/Debug/simulation/main.o"
+    "directory": "/home/theo/Dokumente/VSCode/simulation-tests/",
+    "file": "/home/theo/Dokumente/VSCode/simulation-tests/src/main.c",
+    "output": "/home/theo/Dokumente/VSCode/simulation-tests/obj/x64/Debug/simulation-tests/main.o"
   },
   {
     "arguments": [
@@ -67,9 +67,9 @@
       "obj/x64/Debug/raylib/config.o",
       "build/external/raylib-master/src/config.h"
     ],
-    "directory": "/home/theo/Dokumente/VSCode/simulation/",
-    "file": "/home/theo/Dokumente/VSCode/simulation/build/external/raylib-master/src/config.h",
-    "output": "/home/theo/Dokumente/VSCode/simulation/obj/x64/Debug/raylib/config.o"
+    "directory": "/home/theo/Dokumente/VSCode/simulation-tests/",
+    "file": "/home/theo/Dokumente/VSCode/simulation-tests/build/external/raylib-master/src/config.h",
+    "output": "/home/theo/Dokumente/VSCode/simulation-tests/obj/x64/Debug/raylib/config.o"
   },
   {
     "arguments": [
@@ -89,9 +89,9 @@
       "obj/x64/Debug/raylib/raylib.o",
       "build/external/raylib-master/src/raylib.h"
     ],
-    "directory": "/home/theo/Dokumente/VSCode/simulation/",
-    "file": "/home/theo/Dokumente/VSCode/simulation/build/external/raylib-master/src/raylib.h",
-    "output": "/home/theo/Dokumente/VSCode/simulation/obj/x64/Debug/raylib/raylib.o"
+    "directory": "/home/theo/Dokumente/VSCode/simulation-tests/",
+    "file": "/home/theo/Dokumente/VSCode/simulation-tests/build/external/raylib-master/src/raylib.h",
+    "output": "/home/theo/Dokumente/VSCode/simulation-tests/obj/x64/Debug/raylib/raylib.o"
   },
   {
     "arguments": [
@@ -111,9 +111,9 @@
       "obj/x64/Debug/raylib/raymath.o",
       "build/external/raylib-master/src/raymath.h"
     ],
-    "directory": "/home/theo/Dokumente/VSCode/simulation/",
-    "file": "/home/theo/Dokumente/VSCode/simulation/build/external/raylib-master/src/raymath.h",
-    "output": "/home/theo/Dokumente/VSCode/simulation/obj/x64/Debug/raylib/raymath.o"
+    "directory": "/home/theo/Dokumente/VSCode/simulation-tests/",
+    "file": "/home/theo/Dokumente/VSCode/simulation-tests/build/external/raylib-master/src/raymath.h",
+    "output": "/home/theo/Dokumente/VSCode/simulation-tests/obj/x64/Debug/raylib/raymath.o"
   },
   {
     "arguments": [
@@ -133,9 +133,9 @@
       "obj/x64/Debug/raylib/rcamera.o",
       "build/external/raylib-master/src/rcamera.h"
     ],
-    "directory": "/home/theo/Dokumente/VSCode/simulation/",
-    "file": "/home/theo/Dokumente/VSCode/simulation/build/external/raylib-master/src/rcamera.h",
-    "output": "/home/theo/Dokumente/VSCode/simulation/obj/x64/Debug/raylib/rcamera.o"
+    "directory": "/home/theo/Dokumente/VSCode/simulation-tests/",
+    "file": "/home/theo/Dokumente/VSCode/simulation-tests/build/external/raylib-master/src/rcamera.h",
+    "output": "/home/theo/Dokumente/VSCode/simulation-tests/obj/x64/Debug/raylib/rcamera.o"
   },
   {
     "arguments": [
@@ -155,9 +155,9 @@
       "obj/x64/Debug/raylib/rgestures.o",
       "build/external/raylib-master/src/rgestures.h"
     ],
-    "directory": "/home/theo/Dokumente/VSCode/simulation/",
-    "file": "/home/theo/Dokumente/VSCode/simulation/build/external/raylib-master/src/rgestures.h",
-    "output": "/home/theo/Dokumente/VSCode/simulation/obj/x64/Debug/raylib/rgestures.o"
+    "directory": "/home/theo/Dokumente/VSCode/simulation-tests/",
+    "file": "/home/theo/Dokumente/VSCode/simulation-tests/build/external/raylib-master/src/rgestures.h",
+    "output": "/home/theo/Dokumente/VSCode/simulation-tests/obj/x64/Debug/raylib/rgestures.o"
   },
   {
     "arguments": [
@@ -177,9 +177,9 @@
       "obj/x64/Debug/raylib/rlgl.o",
       "build/external/raylib-master/src/rlgl.h"
     ],
-    "directory": "/home/theo/Dokumente/VSCode/simulation/",
-    "file": "/home/theo/Dokumente/VSCode/simulation/build/external/raylib-master/src/rlgl.h",
-    "output": "/home/theo/Dokumente/VSCode/simulation/obj/x64/Debug/raylib/rlgl.o"
+    "directory": "/home/theo/Dokumente/VSCode/simulation-tests/",
+    "file": "/home/theo/Dokumente/VSCode/simulation-tests/build/external/raylib-master/src/rlgl.h",
+    "output": "/home/theo/Dokumente/VSCode/simulation-tests/obj/x64/Debug/raylib/rlgl.o"
   },
   {
     "arguments": [
@@ -199,9 +199,9 @@
       "obj/x64/Debug/raylib/raudio.o",
       "build/external/raylib-master/src/raudio.c"
     ],
-    "directory": "/home/theo/Dokumente/VSCode/simulation/",
-    "file": "/home/theo/Dokumente/VSCode/simulation/build/external/raylib-master/src/raudio.c",
-    "output": "/home/theo/Dokumente/VSCode/simulation/obj/x64/Debug/raylib/raudio.o"
+    "directory": "/home/theo/Dokumente/VSCode/simulation-tests/",
+    "file": "/home/theo/Dokumente/VSCode/simulation-tests/build/external/raylib-master/src/raudio.c",
+    "output": "/home/theo/Dokumente/VSCode/simulation-tests/obj/x64/Debug/raylib/raudio.o"
   },
   {
     "arguments": [
@@ -221,9 +221,9 @@
       "obj/x64/Debug/raylib/rcore.o",
       "build/external/raylib-master/src/rcore.c"
     ],
-    "directory": "/home/theo/Dokumente/VSCode/simulation/",
-    "file": "/home/theo/Dokumente/VSCode/simulation/build/external/raylib-master/src/rcore.c",
-    "output": "/home/theo/Dokumente/VSCode/simulation/obj/x64/Debug/raylib/rcore.o"
+    "directory": "/home/theo/Dokumente/VSCode/simulation-tests/",
+    "file": "/home/theo/Dokumente/VSCode/simulation-tests/build/external/raylib-master/src/rcore.c",
+    "output": "/home/theo/Dokumente/VSCode/simulation-tests/obj/x64/Debug/raylib/rcore.o"
   },
   {
     "arguments": [
@@ -243,9 +243,9 @@
       "obj/x64/Debug/raylib/rglfw.o",
       "build/external/raylib-master/src/rglfw.c"
     ],
-    "directory": "/home/theo/Dokumente/VSCode/simulation/",
-    "file": "/home/theo/Dokumente/VSCode/simulation/build/external/raylib-master/src/rglfw.c",
-    "output": "/home/theo/Dokumente/VSCode/simulation/obj/x64/Debug/raylib/rglfw.o"
+    "directory": "/home/theo/Dokumente/VSCode/simulation-tests/",
+    "file": "/home/theo/Dokumente/VSCode/simulation-tests/build/external/raylib-master/src/rglfw.c",
+    "output": "/home/theo/Dokumente/VSCode/simulation-tests/obj/x64/Debug/raylib/rglfw.o"
   },
   {
     "arguments": [
@@ -265,9 +265,9 @@
       "obj/x64/Debug/raylib/rmodels.o",
       "build/external/raylib-master/src/rmodels.c"
     ],
-    "directory": "/home/theo/Dokumente/VSCode/simulation/",
-    "file": "/home/theo/Dokumente/VSCode/simulation/build/external/raylib-master/src/rmodels.c",
-    "output": "/home/theo/Dokumente/VSCode/simulation/obj/x64/Debug/raylib/rmodels.o"
+    "directory": "/home/theo/Dokumente/VSCode/simulation-tests/",
+    "file": "/home/theo/Dokumente/VSCode/simulation-tests/build/external/raylib-master/src/rmodels.c",
+    "output": "/home/theo/Dokumente/VSCode/simulation-tests/obj/x64/Debug/raylib/rmodels.o"
   },
   {
     "arguments": [
@@ -287,9 +287,9 @@
       "obj/x64/Debug/raylib/rshapes.o",
       "build/external/raylib-master/src/rshapes.c"
     ],
-    "directory": "/home/theo/Dokumente/VSCode/simulation/",
-    "file": "/home/theo/Dokumente/VSCode/simulation/build/external/raylib-master/src/rshapes.c",
-    "output": "/home/theo/Dokumente/VSCode/simulation/obj/x64/Debug/raylib/rshapes.o"
+    "directory": "/home/theo/Dokumente/VSCode/simulation-tests/",
+    "file": "/home/theo/Dokumente/VSCode/simulation-tests/build/external/raylib-master/src/rshapes.c",
+    "output": "/home/theo/Dokumente/VSCode/simulation-tests/obj/x64/Debug/raylib/rshapes.o"
   },
   {
     "arguments": [
@@ -309,9 +309,9 @@
       "obj/x64/Debug/raylib/rtext.o",
       "build/external/raylib-master/src/rtext.c"
     ],
-    "directory": "/home/theo/Dokumente/VSCode/simulation/",
-    "file": "/home/theo/Dokumente/VSCode/simulation/build/external/raylib-master/src/rtext.c",
-    "output": "/home/theo/Dokumente/VSCode/simulation/obj/x64/Debug/raylib/rtext.o"
+    "directory": "/home/theo/Dokumente/VSCode/simulation-tests/",
+    "file": "/home/theo/Dokumente/VSCode/simulation-tests/build/external/raylib-master/src/rtext.c",
+    "output": "/home/theo/Dokumente/VSCode/simulation-tests/obj/x64/Debug/raylib/rtext.o"
   },
   {
     "arguments": [
@@ -331,8 +331,8 @@
       "obj/x64/Debug/raylib/rtextures.o",
       "build/external/raylib-master/src/rtextures.c"
     ],
-    "directory": "/home/theo/Dokumente/VSCode/simulation/",
-    "file": "/home/theo/Dokumente/VSCode/simulation/build/external/raylib-master/src/rtextures.c",
-    "output": "/home/theo/Dokumente/VSCode/simulation/obj/x64/Debug/raylib/rtextures.o"
+    "directory": "/home/theo/Dokumente/VSCode/simulation-tests/",
+    "file": "/home/theo/Dokumente/VSCode/simulation-tests/build/external/raylib-master/src/rtextures.c",
+    "output": "/home/theo/Dokumente/VSCode/simulation-tests/obj/x64/Debug/raylib/rtextures.o"
   },
 ]
