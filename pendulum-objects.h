@@ -367,7 +367,7 @@ class Motor{
     void suppress(PointMass* connected_mass, const float wiggleroom, const float velocity_factor, const float win_width){
         //wiggleroom: bereich in dem die masse entschleunigt wird
 
-        //Problem: folgt der Masse bis aus dem Bild hinterher
+
         float rel_pos = connected_mass->pos_x - pos_x;
 
         if (rel_pos < 0) rel_pos *= -1.0f;

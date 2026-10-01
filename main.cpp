@@ -73,7 +73,7 @@ int main(){
             
 
             float velSq = mass1.vel_x * mass1.vel_x + mass1.vel_y * mass1.vel_y;
-            constexpr float surplus_speed_for_suppress = 50000.0f;
+            constexpr float surplus_speed_for_suppress = 40000.0f;
             float velSq_needed_for_flip = 4.0f * (length_init + mass1.pos_y - motor1.pos_y) * acceleration_g;
             //std::cout << velSq << "     " << velSq_needed_for_flip << "\n";
 
@@ -96,18 +96,20 @@ int main(){
 
             if(IsKeyDown(KEY_SPACE)) curr_operation = Stop;
 
-            //TODO: Roboter geht sehr schnell an die Ränder, vor allem bei Excite
+            //TODO: Fährt oft sehr schnell an die Ränder
             if(curr_operation == Excite){
                 constexpr float position_change_from_excite = 50.0f; //wirklich keine Ahnung wie ich das nennen soll
                 motor1.excite(&mass1, equilibrium_detected, position_change_from_excite); //Motor soll Pendel aufschwingen
             }
             else if(curr_operation == Stabilize){
                  //gibt an, wie stark der motor dem pendel nachfolgt (stabilisiert Pendel)
-                constexpr float speed_change_factor = 1.9f; //gibt an, wie viel der motor der masse voraus fährt (hält Motor an einem Ort)
+                constexpr float speed_change_factor = 1.6f; //gibt an, wie viel der motor der masse voraus fährt (hält Motor an einem Ort)
                 motor1.stabilize(&mass1, speed_change_factor);
             }
+
+            //TODO: sehr ineffizient umgesetzt
             else if (curr_operation == Suppress){
-                constexpr float speed_change_factor = 1.5f;
+                constexpr float speed_change_factor = 2.0f;
                 constexpr float suppress_interval = 20.0f;
                 motor1.suppress(&mass1, suppress_interval, speed_change_factor, win_dimensions[0]);
             }
