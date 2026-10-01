@@ -30,7 +30,8 @@ Basiert auf der Physik-Engine vom Doppelpendel.
 
 Die Regelung funktioniert, wie im Video zu sehen ist gut, wenn das Pendel aus der Ruhelage startet.
 Jedoch braucht sie viele Anläufe, um das Pendel zu stabilisieren, wenn man es von oben fallen lässt.
-Dies soll in Zukunft noch behoben werden,
+Dies soll in Zukunft noch behoben werden.
+Für das Debugging werden einige Informationen auf dem Bildschirm angezeigt.
 
 Code: `main.cpp`
 
