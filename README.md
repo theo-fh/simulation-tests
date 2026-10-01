@@ -27,6 +27,7 @@ und seine Position mit einem P-Glied geregelt.
 Es wird angenommen, dass die Trägheit der Punktmasse die Arbeit des Motors nicht beeinträchtigt
 und dass die Regelung ohne Verzögerung über Position und Geschwindigkeit der Masse in kartesischen Koordinaten verfügt.
 Basiert auf der Physik-Engine vom Doppelpendel.
+Mit einem Druck auf die Leertaste wird das Lager in die Mitte des Bildschirms bewegt (Operation 'Stop').
 
 Die Regelung funktioniert, wie im Video zu sehen ist gut, wenn das Pendel aus der Ruhelage startet.
 Jedoch braucht sie viele Anläufe, um das Pendel zu stabilisieren, wenn man es von oben fallen lässt.
