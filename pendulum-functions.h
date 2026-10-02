@@ -30,6 +30,26 @@ void printOperation(operation currOp, const Font font, const int fontsize){
     DrawTextEx(font, output.c_str(), {posX, posY}, fontsize, 0.0f, BLACK);
 }
 
+void drawForcePush(PointMass* mass, const float nx, const float ny, const float amount, const float scale){
+    float start_x = mass->pos_x - nx * mass->length / 2.0f;
+    float start_y = mass->pos_y - ny * mass->length / 2.0f;
+
+    float end_x = start_x - nx * amount * scale;
+    float end_y = start_y - ny * amount * scale;
+
+    constexpr float thickness = 3.0f;
+    DrawLineEx({start_x, start_y}, {end_x, end_y}, thickness, RED);
+    constexpr float arrow_length = 16.0f;
+    constexpr float arrow_thick = 7.0f;
+
+    float point3_x = start_x - nx * arrow_length - ny * arrow_thick;
+    float point3_y = start_y - ny * arrow_length + nx * arrow_thick;
+
+    float point2_x = start_x - nx * arrow_length + ny * arrow_thick;
+    float point2_y = start_y - ny * arrow_length - nx * arrow_thick;
+    DrawTriangle({start_x, start_y}, {point2_x, point2_y}, {point3_x, point3_y}, RED);
+}
+
 bool detectEquilibrium(PointMass* mass, Motor* motor){
     if(std::abs(motor->pos_x - mass->pos_x) < 1.0f) return true;
     return false;

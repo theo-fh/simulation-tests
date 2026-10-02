@@ -65,38 +65,42 @@ int main(){
     operation curr_operation = Excite;
     while(!WindowShouldClose()){
 
+        float velSq = mass1.vel_x * mass1.vel_x + mass1.vel_y * mass1.vel_y;
+        constexpr float surplus_speed_for_suppress = 40000.0f;
+        float velSq_needed_for_flip = 4.0f * (length_init + mass1.pos_y - motor1.pos_y) * acceleration_g;
+        //std::cout << velSq << "     " << velSq_needed_for_flip << "\n";
+    
+        constexpr float max_border_dist = 30.0f;
+        if(motor1.pos_x < max_border_dist | motor1.pos_x > win_dimensions[0] - max_border_dist) curr_operation = Center;
+
+        constexpr float center_tolerance = 50.0f;
+
+        if(curr_operation == Center && abs(motor1.pos_x - win_dimensions[0] / 2) > center_tolerance) {}
+
+
+        else if(velSq > velSq_needed_for_flip + surplus_speed_for_suppress) curr_operation = Suppress; 
+
+        else if(mass1.pos_y < motor1.pos_y && equilibrium_detected) curr_operation = Stabilize;
+
+        else if (mass1.pos_y > motor1.pos_y ) curr_operation = Excite;
+        //FIXME: Operationsauswahl geht nach dem drücken von Pfeiltasten (push) kaputt
+        //funktioniert wieder nachdem ich Leertaste drücke (Stop).....
+
+        if(IsKeyDown(KEY_SPACE)) curr_operation = Stop;
+
+        constexpr float push_force = 80.0f;
+        float push_factor;
+        if(IsKeyDown(KEY_LEFT)) push_factor = mass1.push('L', push_force);
+        else if (IsKeyDown(KEY_RIGHT)) push_factor = mass1.push('R', push_force);
+        else push_factor = mass1.push('-', 0.0f);
+
         //Koordinaten in Substeps erneuern
         for(int step = 0; step < sub_steps; step++){
 
             rod1.update();
             
-            
-
-            float velSq = mass1.vel_x * mass1.vel_x + mass1.vel_y * mass1.vel_y;
-            constexpr float surplus_speed_for_suppress = 40000.0f;
-            float velSq_needed_for_flip = 4.0f * (length_init + mass1.pos_y - motor1.pos_y) * acceleration_g;
-            //std::cout << velSq << "     " << velSq_needed_for_flip << "\n";
-
-
-            constexpr float max_border_dist = 30.0f;
-            if(motor1.pos_x < max_border_dist | motor1.pos_x > win_dimensions[0] - max_border_dist) curr_operation = Center;
-
-            constexpr float center_tolerance = 50.0f;
-
-            if(curr_operation == Center && abs(motor1.pos_x - win_dimensions[0] / 2) > center_tolerance) {}
-
-            
-
-            else if(velSq > velSq_needed_for_flip + surplus_speed_for_suppress) curr_operation = Suppress; 
-
-            else if(mass1.pos_y < motor1.pos_y && equilibrium_detected) curr_operation = Stabilize;
-
-            else if (mass1.pos_y > motor1.pos_y ) curr_operation = Excite;
-
-
-            if(IsKeyDown(KEY_SPACE)) curr_operation = Stop;
-
-            //TODO: Fährt oft sehr schnell an die Ränder
+            //FIXME: Fährt oft sehr schnell an die Ränder
+            //FIXME: fügt zu viel Energie hinzu, wenn das Pendel gerade so nicht genug hat um zu stabilisieren
             if(curr_operation == Excite){
                 constexpr float position_change_from_excite = 50.0f; //wirklich keine Ahnung wie ich das nennen soll
                 motor1.excite(&mass1, equilibrium_detected, position_change_from_excite); //Motor soll Pendel aufschwingen
@@ -107,7 +111,7 @@ int main(){
                 motor1.stabilize(&mass1, speed_change_factor);
             }
 
-            //TODO: sehr ineffizient umgesetzt
+            //TODO: effizienter umsetzen
             else if (curr_operation == Suppress){
                 constexpr float speed_change_factor = 2.0f;
                 constexpr float suppress_interval = 20.0f;
@@ -153,6 +157,8 @@ int main(){
         //Stäbe und Massen
         rod1.draw();
         mass1.drawAsCircle(notoserif);
+        constexpr float draw_force_scale = 0.8f;
+        if(push_factor != 0.0f) drawForcePush(&mass1, push_factor, 0.0f, push_force, draw_force_scale);
         //std::cout << mass1.forces_x[0] << "\n";
 
         //Lager

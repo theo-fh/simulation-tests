@@ -31,6 +31,17 @@ class PointMass{
         forces_y.push_back(mass_given * g);
         float density = 15.0f; //quasi die Dichte
         length = mass * density;
+
+        forces_x.push_back(0.0f); //Platz für push
+    }
+
+    float push(char direction, float force){
+        float direction_factor = 0.0f;
+        if(direction == 'R') direction_factor = 1.0f;
+        if(direction == 'L') direction_factor = -1.0f;
+        forces_x[0] = direction_factor * force;
+
+        return direction_factor;
     }
 
     void drawAsCircle(Font font_given){
