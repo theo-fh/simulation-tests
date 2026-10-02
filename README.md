@@ -1,6 +1,29 @@
 # Simulation-Tests
 
-Eine Sammlung an drei kleinen Programmen, die ich geschrieben habe, um die Simulation von Mehrkörperdynamik kennenzulernen. Es folgen einige Demo-Videos. Falls Sie das Programm selber ausführen wollen, benötigen Sie die Raylib-Bibliothek als Abhängigkeit.
+Eine Sammlung an vier kleinen Programmen, die ich geschrieben habe, um die Simulation von Mehrkörperdynamik kennenzulernen. Es folgen einige Demo-Videos. Falls Sie das Programm selber ausführen wollen, benötigen Sie die [Raylib-Bibliothek](https://github.com/raysan5/raylib) als Abhängigkeit.
+
+## Pendel-Roboter
+
+https://github.com/user-attachments/assets/f86d42eb-1a62-4ba5-a64a-fca6f2cf3081
+
+Ein Motor, der ein Pendel aufschwingt und dann oben in der Luft behält.
+Um die Simulation möglichst realistisch zu halten,
+wird Geschwindigkeit und Beschleunigung des Motors jeweils begrenzt
+und seine Position mit einem P-Glied geregelt.
+Es wird angenommen, dass die Trägheit der Punktmasse die Arbeit des Motors nicht beeinträchtigt
+und dass die Regelung ohne Verzögerung über Position und Geschwindigkeit der Masse in kartesischen Koordinaten verfügt.
+Basiert auf der Physik-Engine vom Doppelpendel.
+
+Mit den Pfeiltasten kann die Masse leicht nach links oder rechts gedrückt werden, um die Balance des Roboters zu testen.
+Mit einem Druck auf die Leertaste wird das Lager in die Mitte des Bildschirms bewegt (Operation 'Stop').
+
+Die Regelung zur Stabilisierung des Pendels funktioniert, wie im Video zu sehen ist gut, wenn das Pendel aus der Ruhelage startet.
+Jedoch braucht sie viele Anläufe, um das Pendel zu stabilisieren, wenn man es von oben fallen lässt.
+Einige Operationen zum Schaffen von besseren Anfangsbedingungen (niedrige Auslenkung und Winkelgeschwindigkeit) für die Regelung wurden eingefügt,
+jedoch nur mit stark eingeschränkter Funktion. Sie neigen nämlich dazu, sehr große Entfernungen zurücklegen zu müssen.
+Für das Debugging werden einige Informationen (Verlauf des Pendels, Operation, Richtung der störenden Kraft) auf dem Bildschirm angezeigt.
+
+Code: `main.cpp`
 
 ## Doppelpendel
 
@@ -15,26 +38,6 @@ Die Simulation ist auf Kraft basiert, nachträglich wird die Geometrie korrigier
 Dieser Effekt kann mit einer iterativen Anwendung der zwei Zwangsbedingungen und einer sehr hohen Zahl an Substeps (Simulationsschritten, die zwischen zwei Frames geschehen), stark vermindert werden. Jedoch führt das zu einer relativ hohen CPU-Auslastung für so eine einfache Simulation. Die Anwendung ist also stark begrenzt.
 
 Code: `pendulum.cpp`
-
-## Pendel-Roboter
-
-https://github.com/user-attachments/assets/a92dbfdd-0cdf-4f9a-9700-36aac4cbe149
-
-Ein Motor, der ein Pendel aufschwingt und dann oben in der Luft behält.
-Um die Simulation möglichst realistisch zu halten,
-wird Geschwindigkeit und Beschleunigung des Motors jeweils begrenzt
-und seine Position mit einem P-Glied geregelt.
-Es wird angenommen, dass die Trägheit der Punktmasse die Arbeit des Motors nicht beeinträchtigt
-und dass die Regelung ohne Verzögerung über Position und Geschwindigkeit der Masse in kartesischen Koordinaten verfügt.
-Basiert auf der Physik-Engine vom Doppelpendel.
-Mit einem Druck auf die Leertaste wird das Lager in die Mitte des Bildschirms bewegt (Operation 'Stop').
-
-Die Regelung funktioniert, wie im Video zu sehen ist gut, wenn das Pendel aus der Ruhelage startet.
-Jedoch braucht sie viele Anläufe, um das Pendel zu stabilisieren, wenn man es von oben fallen lässt.
-Dies soll in Zukunft noch behoben werden.
-Für das Debugging werden einige Informationen auf dem Bildschirm angezeigt.
-
-Code: `main.cpp`
 
 ## Kugeln im Raum
 
