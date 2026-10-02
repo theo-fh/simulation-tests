@@ -16,7 +16,7 @@ Basiert auf der Physik-Engine vom Doppelpendel.
 
 Mit den Pfeiltasten kann die Masse leicht nach links oder rechts gedrückt werden, um die Balance des Roboters zu testen.
 Mit einem Druck auf die Leertaste wird das Lager in die Mitte des Bildschirms bewegt (Operation 'Stop').
-Für das Debugging werden einige Informationen (Verlauf des Pendels, Operation, Richtung der störenden Kraft) auf dem Bildschirm angezeigt.
+Für das Debugging werden einige Informationen (Verlauf des Pendels, Stellwert für Position des Motors, Operation, Richtung der störenden Kraft) auf dem Bildschirm angezeigt.
 
 Die Regelung zur Stabilisierung des Pendels funktioniert, wie im Video zu sehen ist gut, wenn das Pendel aus der Ruhelage startet.
 Jedoch braucht sie viele Anläufe, um das Pendel zu stabilisieren, wenn man es von oben fallen lässt.
