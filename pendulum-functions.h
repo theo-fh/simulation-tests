@@ -51,7 +51,8 @@ void drawForcePush(PointMass* mass, const float nx, const float ny, const float 
 }
 
 bool detectEquilibrium(PointMass* mass, Motor* motor){
-    if(std::abs(motor->pos_x - mass->pos_x) < 1.0f) return true;
+    float rel_pos = motor->pos_x - mass->pos_x;
+    if(rel_pos < 5.0f && rel_pos > -5.0f) return true;
     return false;
 }
 

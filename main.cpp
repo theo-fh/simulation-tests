@@ -62,11 +62,12 @@ int main(){
     constexpr float dt = (frame_dt * speed_factor) / (float)sub_steps;
 
     bool equilibrium_detected = false;
+    bool last_equilibrium = false;
     operation curr_operation = Excite;
     while(!WindowShouldClose()){
 
         float velSq = mass1.vel_x * mass1.vel_x + mass1.vel_y * mass1.vel_y;
-        constexpr float surplus_speed_for_suppress = 40000.0f;
+        constexpr float surplus_speed_for_suppress = 2.0f;
         float velSq_needed_for_flip = 4.0f * (length_init + mass1.pos_y - motor1.pos_y) * acceleration_g;
         //std::cout << velSq << "     " << velSq_needed_for_flip << "\n";
     
@@ -78,7 +79,7 @@ int main(){
         if(curr_operation == Center && abs(motor1.pos_x - win_dimensions[0] / 2) > center_tolerance) {}
 
 
-        else if(velSq > velSq_needed_for_flip + surplus_speed_for_suppress) curr_operation = Suppress; 
+        else if(velSq > velSq_needed_for_flip * surplus_speed_for_suppress) curr_operation = Suppress; 
 
         else if(mass1.pos_y < motor1.pos_y && equilibrium_detected) curr_operation = Stabilize;
 
@@ -93,38 +94,47 @@ int main(){
         if(IsKeyDown(KEY_LEFT)) push_factor = mass1.push('L', push_force);
         else if (IsKeyDown(KEY_RIGHT)) push_factor = mass1.push('R', push_force);
         else push_factor = mass1.push('-', 0.0f);
+        if (equilibrium_detected | last_equilibrium) std::cout << equilibrium_detected << "\t" << last_equilibrium << "\n";
+
+
+        //FIXME: Fährt oft sehr schnell an die Ränder
+        //FIXME: fügt zu viel Energie hinzu, wenn das Pendel gerade so nicht genug hat um zu stabilisieren
+        if(curr_operation == Excite){
+            constexpr float position_change_from_excite = 50.0f; //wirklich keine Ahnung wie ich das nennen soll
+            motor1.excite(&mass1, equilibrium_detected, last_equilibrium, position_change_from_excite); //Motor soll Pendel aufschwingen
+        }
+        else if(curr_operation == Stabilize){
+                //gibt an, wie stark der motor dem pendel nachfolgt (stabilisiert Pendel)
+            constexpr float speed_change_factor = 1.6f; //gibt an, wie viel der motor der masse voraus fährt (hält Motor an einem Ort)
+            motor1.stabilize(&mass1, speed_change_factor);
+        }
+
+        //TODO: effizienter umsetzen
+        else if (curr_operation == Suppress){
+            constexpr float speed_change_factor = 2.0f;
+            constexpr float suppress_interval = 20.0f;
+            motor1.suppress(&mass1, suppress_interval, speed_change_factor, win_dimensions[0]);
+        }
+        else if(curr_operation == Stop) motor1.reference_pos_x = win_dimensions[0]/2.0f;
+
+        else if(curr_operation == Center){
+            constexpr float wiggleroom = 40.0f;
+            motor1.center(&mass1, wiggleroom, win_dimensions[0]);
+        };
+
+
+        //FIXME: Excite setzt oft aus
+        last_equilibrium = equilibrium_detected;
+        equilibrium_detected = detectEquilibrium(&mass1, &motor1);
+
 
         //Koordinaten in Substeps erneuern
         for(int step = 0; step < sub_steps; step++){
 
             rod1.update();
             
-            //FIXME: Fährt oft sehr schnell an die Ränder
-            //FIXME: fügt zu viel Energie hinzu, wenn das Pendel gerade so nicht genug hat um zu stabilisieren
-            if(curr_operation == Excite){
-                constexpr float position_change_from_excite = 50.0f; //wirklich keine Ahnung wie ich das nennen soll
-                motor1.excite(&mass1, equilibrium_detected, position_change_from_excite); //Motor soll Pendel aufschwingen
-            }
-            else if(curr_operation == Stabilize){
-                 //gibt an, wie stark der motor dem pendel nachfolgt (stabilisiert Pendel)
-                constexpr float speed_change_factor = 1.6f; //gibt an, wie viel der motor der masse voraus fährt (hält Motor an einem Ort)
-                motor1.stabilize(&mass1, speed_change_factor);
-            }
-
-            //TODO: effizienter umsetzen
-            else if (curr_operation == Suppress){
-                constexpr float speed_change_factor = 2.0f;
-                constexpr float suppress_interval = 20.0f;
-                motor1.suppress(&mass1, suppress_interval, speed_change_factor, win_dimensions[0]);
-            }
-            else if(curr_operation == Stop) motor1.reference_pos_x = win_dimensions[0]/2.0f;
-
-            else if(curr_operation == Center){
-                constexpr float wiggleroom = 40.0f;
-                motor1.center(&mass1, wiggleroom, win_dimensions[0]);
-            };
-
-            equilibrium_detected = detectEquilibrium(&mass1, &motor1);
+            
+            //equilibrium_detected = detectEquilibrium(&mass1, &motor1);
 
             constexpr float speed_control_factor = 2.0f;
             motor1.controlSpeedP(speed_control_factor, dt); //Motor zur Führungsgröße hinbewegen

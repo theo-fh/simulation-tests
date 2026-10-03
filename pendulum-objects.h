@@ -352,15 +352,20 @@ class Motor{
         if(pos_x < pixels_from_border || pos_x > window_width - pixels_from_border) vel_x *= -1.0f;
     }
 
-    void excite(PointMass* connected_mass, const bool activated_recently, const float reference_change){
+    void excite(PointMass* connected_mass,const bool equilibrium, const bool recent_equil, const float reference_change){
         //Ändert die Stellgröße der x-Position so, dass die Masse höher schwingt. Return sagt, ob Ruhelage erreicht wurde.
-        if((std::abs(pos_x - connected_mass->pos_x) < 1.0f)){
+        /* if((std::abs(pos_x - connected_mass->pos_x) < 1.0f)){
             if(!activated_recently){
                 //std::cout << "Ruhelage!\n";
                 if(connected_mass->vel_x > 0.0f) reference_pos_x -= reference_change;
                 else reference_pos_x += reference_change;
             }
+        } */
+        if(equilibrium && !recent_equil){
+            if(connected_mass->vel_x > 0.0f) reference_pos_x -= reference_change;
+            else reference_pos_x += reference_change;
         }
+
     }
 
     
