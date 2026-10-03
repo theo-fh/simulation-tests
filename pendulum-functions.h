@@ -50,9 +50,12 @@ void drawForcePush(PointMass* mass, const float nx, const float ny, const float 
     DrawTriangle({start_x, start_y}, {point2_x, point2_y}, {point3_x, point3_y}, RED);
 }
 
-bool detectEquilibrium(PointMass* mass, Motor* motor){
+bool detectEquilibrium(PointMass* mass, Motor* motor, const float tolerance_factor){
     float rel_pos = motor->pos_x - mass->pos_x;
-    if(rel_pos < 5.0f && rel_pos > -5.0f) return true;
+    //TODO: optional Erkennung anpassen, dass sie bei hohen geschwindigkeiten nicht aussetzt
+    //float wiggleroom = mass->vel_x * tolerance_factor + 1.0f; //+ 1.0f damit er auslöst wenn das pendel ruht
+    float wiggleroom = 10.0f;
+    if(rel_pos < wiggleroom && rel_pos > -wiggleroom) return true;
     return false;
 }
 
