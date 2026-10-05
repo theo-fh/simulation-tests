@@ -68,7 +68,6 @@ int main(){
 
         float velSq = mass1.vel_x * mass1.vel_x + mass1.vel_y * mass1.vel_y;
 
-        //TODO: diesen wert optimal bestimmen
         constexpr float surplus_speed_for_suppress = 30000.0f;
         float velSq_needed_for_flip = 4.0f * (length_init + mass1.pos_y - motor1.pos_y) * acceleration_g;
         //std::cout << velSq << "     " << velSq_needed_for_flip << "\n";
@@ -84,7 +83,7 @@ int main(){
 
         else if(mass1.pos_y < motor1.pos_y && equilibrium_detected) curr_operation = Stabilize;
 
-        else if (mass1.pos_y > motor1.pos_y ) curr_operation = Excite;
+        else if (mass1.pos_y > motor1.pos_y && velSq < velSq_needed_for_flip) curr_operation = Excite;
 
         if(IsKeyDown(KEY_SPACE)) curr_operation = Stop;
 
@@ -105,15 +104,15 @@ int main(){
         }
 
         else if (curr_operation == Suppress){
-            constexpr float speed_change_factor = 2.0f;
-            constexpr float suppress_interval = 20.0f;
-            motor1.suppress(&mass1, suppress_interval, speed_change_factor, win_dimensions[0]);
+            constexpr float pos_change_from_suppress = 100.0f;
+            constexpr float wiggleroom = 40.0f;
+            motor1.suppress(&mass1, equilibrium_detected, last_equilibrium, pos_change_from_suppress, wiggleroom, win_dimensions[0]);
         }
         else if(curr_operation == Stop) motor1.reference_pos_x = win_dimensions[0]/2.0f;
 
         else if(curr_operation == Center){
             constexpr float wiggleroom = 40.0f;
-            motor1.center(&mass1, wiggleroom, win_dimensions[0]);
+            motor1.center(&mass1, wiggleroom, win_dimensions[0], velSq, velSq_needed_for_flip);
         };
 
         last_equilibrium = equilibrium_detected;

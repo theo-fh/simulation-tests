@@ -380,16 +380,25 @@ class Motor{
 
     }
 
-    //FIXME: schleudert eigentlich nur das Pendel aus dem Bildschirm...
-    void suppress(PointMass* connected_mass, const float wiggleroom, const float velocity_factor, const float win_width){
+    void suppress(PointMass* connected_mass,const bool equilibrium, const bool recent_equil, const float reference_change, float wiggleroom, float win_width){
+
+        /* float rel_pos = connected_mass->pos_x - pos_x;
         //wiggleroom: bereich in dem die masse entschleunigt wird
-
-
-        float rel_pos = connected_mass->pos_x - pos_x;
-
         if (rel_pos < 0) rel_pos *= -1.0f;
 
         if(rel_pos < wiggleroom) reference_pos_x = connected_mass->pos_x + connected_mass->vel_x * velocity_factor;
+
+        else {
+            float posY_rel = connected_mass->pos_y - pos_y;
+            if (posY_rel < 0.0f) posY_rel *= -1.0f;
+            constexpr float position_factor = 1.0f;
+            if(posY_rel < wiggleroom) reference_pos_x = win_width / 2;
+        } */
+
+        if(equilibrium && !recent_equil){
+            if(connected_mass->vel_x > 0.0f) reference_pos_x += reference_change;
+            else reference_pos_x -= reference_change;
+        }
 
         else {
             float posY_rel = connected_mass->pos_y - pos_y;
@@ -400,12 +409,12 @@ class Motor{
 
     }
 
-    void center(PointMass* connected_mass, const float wiggleroom, const float win_width){
+    void center(PointMass* connected_mass, const float wiggleroom, const float win_width, const float velSq, const float velSqNeeded){
         
         float posY_rel = connected_mass->pos_y - pos_y;
         if (posY_rel < 0.0f) posY_rel *= -1.0f;
         constexpr float position_factor = 1.0f;
-        if(posY_rel < wiggleroom) reference_pos_x = win_width / 2;
+        if(posY_rel < wiggleroom | velSq < velSqNeeded / 2.0f) reference_pos_x = win_width / 2;
         else reference_pos_x = pos_x;
 
     }
