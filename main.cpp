@@ -36,7 +36,7 @@ int main(){
     RodLink rod1(&mass1, &motor1);
 
     //Fenster initiieren
-    InitWindow(win_dimensions[0], win_dimensions[1], "Doppelpendel");
+    InitWindow(win_dimensions[0], win_dimensions[1], "Pendel-Roboter");
     constexpr int targetFPS = 60;
     constexpr float speed_factor = 2.5f; //lässt die simulation im zeitraffer ablaufen
     SetTargetFPS(targetFPS);
@@ -111,7 +111,7 @@ int main(){
         else if(curr_operation == Stop) motor1.reference_pos_x = win_dimensions[0]/2.0f;
 
         else if(curr_operation == Center){
-            constexpr float wiggleroom = 40.0f;
+            constexpr float wiggleroom = 80.0f;
             motor1.center(&mass1, wiggleroom, win_dimensions[0], velSq, velSq_needed_for_flip);
         };
 

@@ -351,7 +351,6 @@ class Motor{
     void backAndForth(const int window_width, const int pixels_from_border){
         if(pos_x < pixels_from_border || pos_x > window_width - pixels_from_border) vel_x *= -1.0f;
     }
-    //TODO: soll nur wenig energie hinzufügen wenn das pendel schon fast genug energie hat
     void excite(PointMass* connected_mass,const bool equilibrium, const bool recent_equil, const float reference_change){
         //Ändert die Stellgröße der x-Position so, dass die Masse höher schwingt. Return sagt, ob Ruhelage erreicht wurde.
         /* if((std::abs(pos_x - connected_mass->pos_x) < 1.0f)){
