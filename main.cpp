@@ -20,11 +20,6 @@ int main(){
     constexpr float angle_init = 0.0f * PI / 180.0f;
     const float mass1_init_x = motor_init_x + sinf(angle_init) * length_init;
     const float mass1_init_y = motor_init_y + cosf(angle_init) * length_init;
-
-    //Längen der Stäbe und Ausschlagswinkel holen, false als erster Parameter,
-    //um den Nutzer nicht nach Werten zu fragenm sondern Standardwerte einzusetzen
-    //getInitValues(false, bearing_x, bearing_y, mass1_init_x, mass1_init_y, motor_init_x, motor_init_y);
-
     //Masse und Motor erstellen
     constexpr float mass_given = 2.5f;
     PointMass mass1(":)", mass_given, mass1_init_x, mass1_init_y, acceleration_g);
@@ -68,7 +63,7 @@ int main(){
 
         float velSq = mass1.vel_x * mass1.vel_x + mass1.vel_y * mass1.vel_y;
 
-        constexpr float surplus_speed_for_suppress = 30000.0f;
+        constexpr float surplus_speed_for_suppress = 40000.0f;
         float velSq_needed_for_flip = 4.0f * (length_init + mass1.pos_y - motor1.pos_y) * acceleration_g;
         //std::cout << velSq << "     " << velSq_needed_for_flip << "\n";
     
@@ -96,7 +91,8 @@ int main(){
 
         if(curr_operation == Excite){
             constexpr float position_change_from_excite = 50.0f; //wirklich keine Ahnung wie ich das nennen soll
-            motor1.excite(&mass1, equilibrium_detected, last_equilibrium, position_change_from_excite); //Motor soll Pendel aufschwingen
+            float energy_surplus = velSq - velSq_needed_for_flip;
+            motor1.excite(&mass1, equilibrium_detected, last_equilibrium, position_change_from_excite, energy_surplus, 1.0f); //Motor soll Pendel aufschwingen
         }
         else if(curr_operation == Stabilize){
                 //gibt an, wie stark der motor dem pendel nachfolgt (stabilisiert Pendel)
@@ -114,7 +110,7 @@ int main(){
         else if(curr_operation == Center){
             constexpr float wiggleroom = 80.0f;
             motor1.center(&mass1, wiggleroom, win_dimensions[0], velSq, velSq_needed_for_flip);
-        };
+        }
 
         last_equilibrium = equilibrium_detected;
         //Verhältnis zwischen geschwindigkeit und Intervall, in dem Gleichgewicht erkannt wird
