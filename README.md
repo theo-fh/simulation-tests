@@ -2,32 +2,32 @@
 
 Eine Sammlung an vier kleinen Programmen, die ich geschrieben habe, um die Simulation von Mehrkörperdynamik kennenzulernen. Es folgen einige Demo-Videos. Falls Sie das Programm selber ausführen wollen, benötigen Sie die [Raylib-Bibliothek](https://github.com/raysan5/raylib) als Abhängigkeit.
 
+Einige der Programme können sie unter [Releases](https://github.com/theo-fh/simulation-tests/releases) herunterladen.
+
 ## Pendel-Roboter
 
-https://github.com/user-attachments/assets/f86d42eb-1a62-4ba5-a64a-fca6f2cf3081
+https://github.com/user-attachments/assets/bc38309e-121c-49a0-b876-a9c7c65b6b9e
 
-Ein Motor, der ein Pendel aufschwingt und dann oben in der Luft behält.
+**Notiz zum Video:** Der User Input (drücken - rote Pfeile; anhalten - Operation 'Stop') wird hier nur benutzt , um die Regelung zu stören.
+Es wäre nämlich auch möglich, der Regelung damit zu "helfen".
+
+Ein geregelter Motor, der ein Pendel aufschwingt und dann oben in der Luft behält.
+Die Regelung kann auf Störungen reagieren und die Masse entschleunigen, wenn sie zu schnell ist (Bedingungen eigenständig anpassen).
 Um die Simulation möglichst realistisch zu halten,
-wird Geschwindigkeit und Beschleunigung des Motors jeweils begrenzt
+wird Geschwindigkeit und Beschleunigung des Motors jeweils begrenzt (hier auf relativ hohe Werte)
 und seine Position mit einem P-Glied geregelt.
+
 Es wird angenommen, dass die Trägheit der Punktmasse die Arbeit des Motors nicht beeinträchtigt
 und dass die Regelung ohne Verzögerung über Position und Geschwindigkeit der Masse in kartesischen Koordinaten verfügt.
-Basiert auf der Physik-Engine vom Doppelpendel.
+Basiert auf der Physik-Engine vom Doppelpendel (Motor und Festlager benutzen der Einfachheit halber das gleiche Symbol).
 
-Mit den Pfeiltasten kann die Masse leicht nach links oder rechts gedrückt werden, um die Balance des Roboters zu testen.
-Mit einem Druck auf die Leertaste wird das Lager in die Mitte des Bildschirms bewegt (Operation 'Stop').
-Für das Debugging werden einige Informationen (Verlauf des Pendels, Stellwert für Position des Motors, Operation, Richtung der störenden Kraft) auf dem Bildschirm angezeigt.
-
-Die Regelung zur Stabilisierung des Pendels funktioniert, wie im Video zu sehen ist gut, wenn das Pendel aus der Ruhelage startet.
-Jedoch braucht sie viele Anläufe, um das Pendel zu stabilisieren, wenn man es von oben fallen lässt.
-Einige Operationen zum Schaffen von besseren Anfangsbedingungen (niedrige Auslenkung und Winkelgeschwindigkeit) für die Regelung wurden eingeführt,
-jedoch nur mit stark eingeschränkter Funktion. Sie neigen nämlich dazu, sehr große Entfernungen auf dem Bildschirm zurückzulegen.
+Mit den Pfeiltasten kann die Masse leicht nach links oder rechts gedrückt werden, um die Balance des Roboters zu testen (rote Pfeile).
+Mit einem Druck auf die Leertaste wird das Lager in die Mitte des Bildschirms bewegt und angehalten (Operation 'Stop').
+Für das Debugging werden einige Informationen (Verlauf des Pendels, Stellwert für Position des Motors, Operation) auf dem Bildschirm angezeigt.
 
 Code: `main.cpp`
 
 ## Doppelpendel
-
-Die Programme können sie unter [Releases](https://github.com/theo-fh/simulation-tests/releases) herunterladen.
 
 https://github.com/user-attachments/assets/094a404c-bbf0-4152-a249-40b4d44851ad
 
