@@ -79,6 +79,7 @@ int main(){
 
         if(curr_operation == Center && abs(motor1.pos_x - win_dimensions[0] / 2) > center_tolerance) {}
 
+        //FIXME: Suppress und Excite wechseln sich oft ab, verlängert benötigte Zeit zum Stabilisieren
         else if(velSq > velSq_needed_for_flip + surplus_speed_for_suppress) curr_operation = Suppress; 
 
         else if(mass1.pos_y < motor1.pos_y && equilibrium_detected) curr_operation = Stabilize;
