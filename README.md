@@ -31,7 +31,7 @@ Code: `main.cpp`
 
 https://github.com/user-attachments/assets/094a404c-bbf0-4152-a249-40b4d44851ad
 
-Zwei Punktmassen sind miteinander verbunden, eine fest gelagert. Das System wird ausgelenkt und losgelassen. Der durchaus schöne Verlauf der unteren Masse wird mit einer dünnen grünen Linie nachgezogen.
+Zwei Punktmassen sind miteinander verbunden, eine fest gelagert. Das System wird ausgelenkt und losgelassen. Der Verlauf der unteren Masse wird mit einer dünnen grünen Linie nachgezogen.
 
 Die Simulation ist auf Kraft basiert, nachträglich wird die Geometrie korrigiert, um die Zwangsbedingung der Stäbe durchzusetzen. Gelöst wird mit einem expliziten Euler-Integrationsverfahren. Ein Problem mit dieser Methode ist, dass sie ohne weitere Behandlung viel Energie in das System einführt und bei höheren Auslenkungswinkeln dazu führt, dass das System immer schneller, bis ins undendliche schwingt, aber auch bei kleineren Auslenkungen zu unrealistischen Schwingungsvorgängen führt.
 
